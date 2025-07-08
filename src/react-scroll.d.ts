@@ -10,6 +10,7 @@ declare module 'react-scroll' {
     activeClass?: string;
     className?: string;
     children?: ReactNode;
+    onClick?: () => void;
   }
 
   export const Link: React.ComponentType<LinkProps>;
