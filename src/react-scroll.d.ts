@@ -31,7 +31,7 @@ declare module 'react-scroll' {
   }
 
   export function scrollTo(options: ScrollProps): void;
-  export function animateScroll: {
+  export const animateScroll: {
     scrollToTop(options?: ScrollProps): void;
     scrollToBottom(options?: ScrollProps): void;
     scrollTo(options: ScrollProps): void;
