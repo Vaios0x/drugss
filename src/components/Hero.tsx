@@ -1,95 +1,64 @@
-import { Box, Container, Typography, Button } from '@mui/material';
+// Declaración de tipos para react-scroll
+declare module 'react-scroll';
+
+import { Box, Typography, Button, Container } from '@mui/material';
+import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
 
 const Hero = () => {
   return (
     <Box
+      component={motion.div}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
       sx={{
-        bgcolor: 'primary.main',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
         color: 'white',
-        pt: 20,
-        pb: 8,
-        width: '100%',
-        backgroundImage: `linear-gradient(rgba(25, 118, 210, 0.92), rgba(25, 118, 210, 0.88)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
-      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 4, md: 6 } }}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          gutterBottom
-          sx={{
-            fontSize: { xs: '2.5rem', sm: '3.5rem' },
-            fontWeight: 700,
-            mb: 4,
-          }}
+      <Container maxWidth="md">
+        <Typography 
+          variant="h3" 
+          component="h1" 
+          gutterBottom 
+          sx={{ fontWeight: 'bold', mb: 3 }}
         >
-          Juntos por un México Libre de Drogas
+          Prevención de Adicciones
         </Typography>
         <Typography 
-          variant="h5" 
-          align="center" 
-          paragraph
-          sx={{
-            maxWidth: '800px',
-            mx: 'auto',
-            mb: 6,
-            opacity: 0.9,
-          }}
+          variant="h6" 
+          component="p" 
+          sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}
         >
-          La prevención comienza con información y acción. Conoce las estadísticas,
-          estrategias de prevención y recursos disponibles para combatir el consumo
-          de drogas en México.
+          Información, recursos y estrategias para combatir las adicciones en México
         </Typography>
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Button
-            variant="contained"
-            color="secondary"
+        
+        <Link 
+          to="prevencion-integral" 
+          smooth={true} 
+          duration={500} 
+          offset={-70}
+        >
+          <Button 
+            variant="contained" 
+            color="primary" 
             size="large"
-            component={Link}
-            to="prevencion"
-            smooth={true}
-            duration={500}
-            sx={{ 
-              mr: 2,
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              backgroundColor: 'white',
-              color: 'primary.main',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              }
-            }}
+            component={motion.button}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             Conoce Más
           </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            component={Link}
-            to="recursos"
-            smooth={true}
-            duration={500}
-            sx={{ 
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              borderColor: 'white',
-              color: 'white',
-              '&:hover': {
-                borderColor: 'white',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              }
-            }}
-          >
-            Buscar Ayuda
-          </Button>
-        </Box>
+        </Link>
       </Container>
     </Box>
   );
