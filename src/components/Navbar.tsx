@@ -16,7 +16,7 @@ import {
   useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-scroll';
+import { Link as ScrollLink } from 'react-scroll';
 import { motion } from 'framer-motion';
 
 // Logo animado
@@ -193,12 +193,14 @@ const Navbar = () => {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.to} disablePadding>
-            <Link
+            <ScrollLink
               to={item.to}
               spy={true}
               smooth={true}
               duration={500}
-              style={{ width: '100%' }}
+              offset={-80}
+              activeClass="active"
+              className="nav-link"
             >
               <ListItemText 
                 primary={item.title}
@@ -208,7 +210,7 @@ const Navbar = () => {
                   transition: 'color 0.3s ease'
                 }}
               />
-            </Link>
+            </ScrollLink>
           </ListItem>
         ))}
       </List>
@@ -271,15 +273,17 @@ const Navbar = () => {
                       transition: 'all 0.3s ease',
                     }}
                   >
-                    <Link
+                    <ScrollLink
                       to={item.to}
                       spy={true}
                       smooth={true}
                       duration={500}
-                      style={{ width: '100%', padding: '8px 16px' }}
+                      offset={-80}
+                      activeClass="active"
+                      className="nav-link"
                     >
                       {item.title}
-                    </Link>
+                    </ScrollLink>
                   </Button>
                 ))}
               </Box>
