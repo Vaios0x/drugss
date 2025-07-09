@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Button } from '@mui/material';
-import { Link } from 'react-scroll';
+import { Link as ScrollLink } from 'react-scroll';
 
 const Hero = () => {
   return (
@@ -46,49 +46,45 @@ const Hero = () => {
           de drogas en México.
         </Typography>
         <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            component={Link}
-            to="prevencion"
-            smooth={true}
-            duration={500}
-            sx={{ 
-              mr: 2,
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              backgroundColor: 'white',
-              color: 'primary.main',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              }
-            }}
-          >
-            Conoce Más
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            component={Link}
-            to="recursos"
-            smooth={true}
-            duration={500}
-            sx={{ 
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              borderColor: 'white',
-              color: 'white',
-              '&:hover': {
+          <ScrollLink to="prevencion" smooth={true} duration={500} style={{ textDecoration: 'none' }}>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              sx={{ 
+                mr: 2,
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
+                backgroundColor: 'white',
+                color: 'primary.main',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                }
+              }}
+            >
+              Conoce Más
+            </Button>
+          </ScrollLink>
+          <ScrollLink to="recursos" smooth={true} duration={500} style={{ textDecoration: 'none' }}>
+            <Button
+              variant="outlined"
+              size="large"
+              sx={{ 
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
                 borderColor: 'white',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              }
-            }}
-          >
-            Buscar Ayuda
-          </Button>
+                color: 'white',
+                '&:hover': {
+                  borderColor: 'white',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                }
+              }}
+            >
+              Buscar Ayuda
+            </Button>
+          </ScrollLink>
         </Box>
       </Container>
     </Box>
