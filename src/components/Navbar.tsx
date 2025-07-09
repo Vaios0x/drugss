@@ -16,8 +16,18 @@ import {
   useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
+
+// Función de scroll suave nativo
+const smoothScrollTo = (elementId: string) => {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+};
 
 // Logo animado
 const Logo = () => (
@@ -167,6 +177,11 @@ const Navbar = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleNavClick = (sectionId: string) => {
+    smoothScrollTo(sectionId);
+    setMobileOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.to);
@@ -193,22 +208,18 @@ const Navbar = () => {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.to} disablePadding>
-            <Link
-              to={item.to}
-              spy={true}
-              smooth={true}
-              duration={500}
-              style={{ width: '100%' }}
-            >
-              <ListItemText 
-                primary={item.title}
-                sx={{
-                  textAlign: 'center',
-                  color: activeSection === item.to ? theme.palette.primary.main : 'inherit',
-                  transition: 'color 0.3s ease'
-                }}
-              />
-            </Link>
+            <ListItemText
+              primary={item.title}
+              onClick={() => handleNavClick(item.to)}
+              sx={{
+                textAlign: 'center',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+                color: activeSection === item.to ? 'primary.main' : 'inherit',
+              }}
+            />
           </ListItem>
         ))}
       </List>
@@ -249,6 +260,7 @@ const Navbar = () => {
                 {navItems.map((item) => (
                   <Button
                     key={item.to}
+                    onClick={() => handleNavClick(item.to)}
                     sx={{
                       color: activeSection === item.to ? 'primary.main' : 'inherit',
                       position: 'relative',
@@ -271,15 +283,7 @@ const Navbar = () => {
                       transition: 'all 0.3s ease',
                     }}
                   >
-                    <Link
-                      to={item.to}
-                      spy={true}
-                      smooth={true}
-                      duration={500}
-                      style={{ width: '100%', padding: '8px 16px' }}
-                    >
-                      {item.title}
-                    </Link>
+                    {item.title}
                   </Button>
                 ))}
               </Box>
