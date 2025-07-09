@@ -16,7 +16,7 @@ import {
   useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link as ScrollLink } from 'react-scroll';
+import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 
 // Logo animado
@@ -178,43 +178,37 @@ const Navbar = () => {
         }
         return false;
       });
-      
-      // Asegúrate de que current no sea undefined antes de actualizar el estado
       if (current) {
         setActiveSection(current);
       }
     };
 
-    // Verifica que window y window.addEventListener existan antes de usarlos
-    if (typeof window !== 'undefined' && window.addEventListener) {
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        if (window.removeEventListener) {
-          window.removeEventListener('scroll', handleScroll);
-        }
-      };
-    }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Logo />
       <List>
-        {navItems.map((item, index) => (
-          <ListItem key={`mobile-nav-${item.to}`} disablePadding>
-            <ScrollLink
-              key={`scroll-link-mobile-${item.to}`}
+        {navItems.map((item) => (
+          <ListItem key={item.to} disablePadding>
+            <Link
               to={item.to}
               spy={true}
               smooth={true}
               duration={500}
-              offset={-80}
-              activeClass="active"
-              className="nav-link"
-              onClick={handleDrawerToggle}
+              style={{ width: '100%' }}
             >
-              <ListItemText primary={item.title} />
-            </ScrollLink>
+              <ListItemText 
+                primary={item.title}
+                sx={{
+                  textAlign: 'center',
+                  color: activeSection === item.to ? theme.palette.primary.main : 'inherit',
+                  transition: 'color 0.3s ease'
+                }}
+              />
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -223,79 +217,97 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Franja holográfica superior fixed */}
       <HoloBar />
-      <AppBar 
-        position="sticky" 
-        color="transparent" 
-        elevation={trigger ? 4 : 0}
+      <AppBar
+        position="fixed"
         sx={{
-          transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
-          backgroundColor: trigger ? 'rgba(255,255,255,0.9)' : 'transparent',
+          bgcolor: trigger ? 'background.default' : 'transparent',
           backdropFilter: trigger ? 'blur(10px)' : 'none',
-          top: HOLO_HEIGHT,
+          boxShadow: trigger ? 1 : 0,
+          transition: 'all 0.3s ease',
+          top: { xs: 38, md: HOLO_HEIGHT },
+          zIndex: 1301,
         }}
       >
-        <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        <Container maxWidth="xl">
+          <Toolbar sx={{ justifyContent: 'space-between' }}>
+            {/* Logo animado */}
             <Logo />
-            
             {isMobile ? (
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2 }}
+                sx={{ display: { md: 'none' } }}
               >
                 <MenuIcon />
               </IconButton>
             ) : (
               <Box sx={{ display: 'flex', gap: 2 }}>
                 {navItems.map((item) => (
-                  <Button 
-                    key={`desktop-nav-${item.to}`}
-                    color="inherit"
-                    sx={{ 
-                      color: activeSection === item.to ? 'primary.main' : 'text.primary',
-                      fontWeight: activeSection === item.to ? 700 : 400,
-                      transition: 'all 0.3s ease'
+                  <Button
+                    key={item.to}
+                    sx={{
+                      color: activeSection === item.to ? 'primary.main' : 'inherit',
+                      position: 'relative',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: 0,
+                        left: '50%',
+                        transform: activeSection === item.to 
+                          ? 'translateX(-50%) scaleX(1)'
+                          : 'translateX(-50%) scaleX(0)',
+                        width: '100%',
+                        height: '2px',
+                        bgcolor: 'primary.main',
+                        transition: 'transform 0.3s ease',
+                      },
+                      '&:hover': {
+                        bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      },
+                      transition: 'all 0.3s ease',
                     }}
                   >
-                    <ScrollLink
-                      key={`scroll-link-desktop-${item.to}`}
+                    <Link
                       to={item.to}
                       spy={true}
                       smooth={true}
                       duration={500}
-                      offset={-80}
-                      activeClass="active"
-                      className="nav-link"
+                      style={{ width: '100%', padding: '8px 16px' }}
                     >
                       {item.title}
-                    </ScrollLink>
+                    </Link>
                   </Button>
                 ))}
               </Box>
             )}
-            
-            <Drawer
-              variant="temporary"
-              anchor="right"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-              }}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-              }}
-            >
-              {drawer}
-            </Drawer>
           </Toolbar>
         </Container>
       </AppBar>
+
+      <Box component="nav">
+        <Drawer
+          variant="temporary"
+          anchor="right"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      
+      {/* Espaciador para compensar ambas barras fixed */}
+      <Box sx={{ height: { xs: 38 + 56, md: HOLO_HEIGHT + 64 } }} />
     </>
   );
 };
